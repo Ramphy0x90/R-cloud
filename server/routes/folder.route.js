@@ -1,49 +1,40 @@
 const express = require('express');
 const router = express.Router()
-const folderModel = require('../models/folder')
 const path = require('path')
 const fs = require('fs')
 
-router.route('/').get((req, res, next) => {
-    folderModel.find((error, data) => {
-        if(error) return next(error);
-        else res.json(data);
-    })
-});
+router.route('/:path?').get((req, res, next) => {
+    let folderPath = path.join('./public/user-id', (req.params.path ? req.params.path : '/'));
+    let folders = {};
 
-router.route('/:id').get((req, res, next) => {
-    folderModel.findById(req.id, (error, data) => {
-        if(error) return next(error);
-        else res.json(data);
-    })
+    fs.readdirSync(folderPath).map(fileName => {
+        folders[fileName] = path.join(folderPath, fileName);
+    });
+
+    res.json(folders);
 });
 
 router.route('/new').post((req, res, next) => {
     let folderName = req.body.name;
     let folderPath = path.join('./public/user-id', req.body.path, folderName);
 
-    let data = {
-        name: folderName,
-        path: folderPath,
-        isPrivate: false,
-        password: ''
-    }
-
     if(!fs.existsSync(folderPath)){
         fs.mkdir(folderPath, {recursive: true}, (fsError) => {
-            if(fsError) {
-                console.log(`Folder creation error ${fsError}`);
-            } else {
-                folderModel.create(data, (error, data) => {
-                    if(error) return next(error);
-                    else res.json(data);
-                });
-            }
+            if(fsError) console.log(`Folder creation error ${fsError}`);
         });
     } else {
-        console.log('Folder already exists');
         res.json({msg: 'Folder already exists'});
     }
-})
+});
+
+router.route('/:path?').delete((req, res, next) => {
+    let folderPath = path.join('./public/user-id', req.query.path);
+
+    fs.rm(folderPath, {recursive: true}, (fsError) => {
+        console.log(`Folder delete error ${fsError}`);
+    });
+
+    res.status(200).json({msg: 'Folder removed'});
+});
 
 module.exports = router;

@@ -8,7 +8,7 @@ let File = new Schema({
     format: {
         type: String
     },
-    containerId: {
+    containerPath: {
         type: String
     }
 });
