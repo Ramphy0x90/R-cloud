@@ -9,7 +9,12 @@ router.route('/:path?').get((req, res, next) => {
 
     try {
         fs.readdirSync(folderPath).map(fileName => {
-            folders[fileName] = path.join(folderPath, fileName);
+            let elementPath = path.join(folderPath, fileName);
+            
+            folders[fileName] = {
+                isDir: fs.lstatSync(elementPath).isDirectory(),
+                path: elementPath
+            };
         });
     } catch (fsError) {
         return res.status(404).json({msg: 'Folder not found'});
@@ -21,8 +26,6 @@ router.route('/:path?').get((req, res, next) => {
 router.route('/new').post((req, res, next) => {
     let folderName = req.body.name;
     let folderPath = path.join(`./public/${res.user.id}`, req.body.path, folderName);
-
-    console.log(res.user);
 
     if(!fs.existsSync(folderPath)){
         fs.mkdir(folderPath, {recursive: true}, (fsError) => {
