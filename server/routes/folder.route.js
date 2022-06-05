@@ -3,20 +3,26 @@ const router = express.Router()
 const path = require('path')
 const fs = require('fs')
 
-router.route('/:path?').get((req, res) => {
-    let folderPath = path.join('./public/user-id', (req.params.path ? req.params.path : '/'));
+router.route('/:path?').get((req, res, next) => {
+    let folderPath = path.join(`./public/${res.user.id}`, (req.params.path ? req.params.path : '/'));
     let folders = {};
 
-    fs.readdirSync(folderPath).map(fileName => {
-        folders[fileName] = path.join(folderPath, fileName);
-    });
+    try {
+        fs.readdirSync(folderPath).map(fileName => {
+            folders[fileName] = path.join(folderPath, fileName);
+        });
+    } catch (fsError) {
+        return res.status(404).json({msg: 'Folder not found'});
+    }
 
     res.json(folders);
 });
 
 router.route('/new').post((req, res, next) => {
     let folderName = req.body.name;
-    let folderPath = path.join('./public/user-id', req.body.path, folderName);
+    let folderPath = path.join(`./public/${res.user.id}`, req.body.path, folderName);
+
+    console.log(res.user);
 
     if(!fs.existsSync(folderPath)){
         fs.mkdir(folderPath, {recursive: true}, (fsError) => {

@@ -20,7 +20,7 @@ router.route('/login').post(async (req, res) => {
 
     if(user && (await bcrypt.compare(password, user.password))) {
         let token = jwt.sign(
-            {userId: user._id, userName},
+            {id: user._id, userName},
             authConfig.secret,
             {expiresIn: '2h'}
         );
