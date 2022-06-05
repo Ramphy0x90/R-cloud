@@ -16,7 +16,7 @@ router.route('/login').post(async (req, res) => {
     let {userName, password} = req.body;
     let user = await model.findOne({userName});
 
-    if(!user) res.status(404).send('User not found');
+    if(!user) return res.status(404).json({msg: 'User not found'});
 
     if(user && (await bcrypt.compare(password, user.password))) {
         let token = jwt.sign(
@@ -31,7 +31,7 @@ router.route('/login').post(async (req, res) => {
             accessToken: token
         });
     } else {
-        res.status(401).send('Invalid credentials');
+        return res.status(401).json({msg: 'Invalid credentials'});
     }
 
 });
@@ -40,7 +40,7 @@ router.route('/register').post(async (req, res) => {
     let {userName, password} = req.body;
     let checkUserExists = await model.findOne({userName});
 
-    if(checkUserExists) res.status(409).send('User already exists');
+    if(checkUserExists) return res.status(409).json({msg: 'User already exists'});
 
     let encryptedPassword = await bcrypt.hash(password, 10);
 
@@ -49,7 +49,7 @@ router.route('/register').post(async (req, res) => {
         password: encryptedPassword
     });
 
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
 });
 
 module.exports = router;
