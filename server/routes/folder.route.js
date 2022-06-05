@@ -3,7 +3,7 @@ const router = express.Router()
 const path = require('path')
 const fs = require('fs')
 
-router.route('/:path?').get((req, res, next) => {
+router.route('/:path?').get((req, res) => {
     let folderPath = path.join('./public/user-id', (req.params.path ? req.params.path : '/'));
     let folders = {};
 
@@ -20,7 +20,8 @@ router.route('/new').post((req, res, next) => {
 
     if(!fs.existsSync(folderPath)){
         fs.mkdir(folderPath, {recursive: true}, (fsError) => {
-            if(fsError) console.log(`Folder creation error ${fsError}`);
+            if(fsError) next(fsError);
+            res.status(200).json({msg: 'Folder created'});
         });
     } else {
         res.json({msg: 'Folder already exists'});
@@ -31,10 +32,9 @@ router.route('/:path?').delete((req, res, next) => {
     let folderPath = path.join('./public/user-id', req.query.path);
 
     fs.rm(folderPath, {recursive: true}, (fsError) => {
-        console.log(`Folder delete error ${fsError}`);
+        if(fsError) next(fsError);
+        res.status(200).json({msg: 'Folder removed'});
     });
-
-    res.status(200).json({msg: 'Folder removed'});
 });
 
 module.exports = router;

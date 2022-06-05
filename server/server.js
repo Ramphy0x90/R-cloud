@@ -3,6 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const path = require('path')
 const database = require('./database')
+const auth = require('./middleware/auth')
 
 const app = express();
 const port = process.env.PORT || 3435;
@@ -19,7 +20,7 @@ app.use(express.static(frontUrl));
 app.use('/', express.static(frontUrl));
 
 app.use('/api/user/', userRoute);
-app.use('/api/folder/', folderRoute);
+app.use('/api/folder/', auth, folderRoute);
 
 app.listen(port, () => {
     console.log(`[*] Server running on port ${port}`);

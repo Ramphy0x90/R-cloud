@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken')
+const authConfig = require('../config/auth.config')
 
 const checkToken = (req, res, next) => {
-    let token = req.body.token || req.query.token || req.headers["x-access-token"];
+    let token = req.headers["x-access-token"];
 
     if(!token) res.status(403).send('Authentication required');
 
-    let decoded = jwt.verify(token, 'secret', (error) => {
-        res.status(401).send('Invalid token');
-    });
-    req.user = decoded;
+    jwt.verify(token, authConfig.secret, (error, decoded) => {
+        if(error) res.status(401).send('Invalid token');
+        else req.user = decoded;
 
-    return next();
+        return next();
+    });    
 }
 
 module.exports = checkToken;

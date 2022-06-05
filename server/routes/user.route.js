@@ -3,6 +3,7 @@ const router = express.Router()
 const model = require('../models/user')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const authConfig = require('../config/auth.config')
 
 router.route('/:id').get((req, res, next) => {
     model.findById(req.params.id, (error, data) => {
@@ -15,18 +16,22 @@ router.route('/login').post(async (req, res) => {
     let {userName, password} = req.body;
     let user = await model.findOne({userName});
 
+    if(!user) res.status(404).send('User not found');
+
     if(user && (await bcrypt.compare(password, user.password))) {
         let token = jwt.sign(
             {userId: user._id, userName},
-            'secret',
+            authConfig.secret,
             {expiresIn: '2h'}
         );
-    
-        user.token = token;
-
-        res.status(200).json(user);
+        
+        res.status(200).send({
+            id: user._id,
+            userName: user.userName,
+            accessToken: token
+        });
     } else {
-        res.status(404).send('User not found');
+        res.status(401).send('Invalid credentials');
     }
 
 });
@@ -43,14 +48,6 @@ router.route('/register').post(async (req, res) => {
         userName: userName, 
         password: encryptedPassword
     });
-
-    let token = jwt.sign(
-        {userId: newUser._id, userName},
-        'secret',
-        {expiresIn: '2h'}
-    );
-
-    newUser.token = token;
 
     res.status(201).json(newUser);
 });
