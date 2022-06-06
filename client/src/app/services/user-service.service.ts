@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -9,8 +9,15 @@ import { Router } from '@angular/router';
 export class UserService {
   baseUri: String = 'http://localhost:3435/api/user';
   headers: HttpHeaders = new HttpHeaders().set('content-type', 'application/json');
+  userStatus: EventEmitter<boolean> = new EventEmitter;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {
+    this.autoLogin();
+  }
+
+  autoLogin() {
+    if(localStorage.getItem('token')) this.userStatus.emit(true);
+  }
 
   login(userData: any) {
     this.http.post<{ accessToken: string; id: string, userName: String }>(`${this.baseUri}/login`, userData)
@@ -18,6 +25,8 @@ export class UserService {
       next: (response) => {
         this.saveLoggedUser(response.accessToken, response.id, response.userName);
         this.router.navigate(['app']);
+        this.userStatus.emit(true);
+
         localStorage.removeItem('loginError');
       },
       error: (error: HttpErrorResponse) => {
@@ -28,6 +37,15 @@ export class UserService {
 
   signup(userData: any) {
     return this.http.post(`${this.baseUri}/register`, userData);
+  }
+
+  logOut() {
+    this.userStatus.emit(false);
+    localStorage.clear();
+  }
+
+  getUserSTatus() {
+    return this.userStatus;
   }
 
   saveLoggedUser(token: String, id: String, userName: String) {
