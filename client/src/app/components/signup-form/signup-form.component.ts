@@ -39,10 +39,9 @@ export class SignupFormComponent implements OnInit {
       this.formSubmitted = false;
       this.formChecked = true;
 
-      console.log("adasd");
-      console.log(this.signUpResponse);
-
       this.signUpForm.reset();
+    } else {
+      this.formChecked = false;
     }
   }
 }

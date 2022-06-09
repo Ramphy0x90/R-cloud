@@ -20,7 +20,7 @@
                 Password required
             </div>
         </div>
-        <div [ngClass]="{'alert alert-success': signUpResponse.type == 201, 'alert alert-danger': signUpResponse.type != 201}" role="alert" *ngIf="formChecked">
+        <div class="alert" [ngClass]="{'alert-success': signUpResponse.type == 201, 'alert-danger': signUpResponse.type == 409}" role="alert" *ngIf="formChecked">
             {{signUpResponse.msg}}
         </div>
         <div class="form-group">

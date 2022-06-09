@@ -10,6 +10,7 @@ export class UserService {
   baseUri: String = 'http://localhost:3435/api/user';
   headers: HttpHeaders = new HttpHeaders().set('content-type', 'application/json');
   userStatus: EventEmitter<boolean> = new EventEmitter;
+  userSignUp: EventEmitter<number> = new EventEmitter;
 
   constructor(private http: HttpClient, private router: Router) {
     this.autoLogin();
@@ -36,7 +37,15 @@ export class UserService {
   }
 
   signup(userData: any) {
-    return this.http.post(`${this.baseUri}/register`, userData);
+    this.http.post<{status: number}>(`${this.baseUri}/register`, userData)
+    .subscribe({
+      next: () => {
+        this.userSignUp.emit(201);
+      },
+      error: (error) => {
+        this.userSignUp.emit(error.status);
+      }
+    });
   }
 
   logOut() {
