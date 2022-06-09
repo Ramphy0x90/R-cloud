@@ -1,5 +1,4 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -12,9 +11,7 @@ export class UserService {
   userStatus: EventEmitter<boolean> = new EventEmitter;
   userSignUp: EventEmitter<number> = new EventEmitter;
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.autoLogin();
-  }
+  constructor(private http: HttpClient, private router: Router) { }
 
   autoLogin() {
     if(localStorage.getItem('token')) this.userStatus.emit(true);
