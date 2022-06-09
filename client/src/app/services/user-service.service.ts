@@ -42,6 +42,7 @@ export class UserService {
   logOut() {
     this.userStatus.emit(false);
     localStorage.clear();
+    this.router.navigate(['home']);
   }
 
   getUserSTatus() {

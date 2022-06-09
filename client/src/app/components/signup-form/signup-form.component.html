@@ -1,1 +1,32 @@
-<p>signup-form works!</p>
+<div class="container h-100">
+    <form [formGroup]="signUpForm" (ngSubmit)="submit()" class="shadow-lg">
+        <div class="icon-container text-center">
+            <i class="bi bi-person-circle"></i>
+            <h4>R-Cloud Signup</h4>
+        </div>
+        <div class="form-group">
+            <label for="userName">Username</label>
+            <input class="form-control" type="text" formControlName="userName" />
+            <!-- error -->
+            <div class="text-danger" *ngIf="formSubmitted && getForm['userName'].errors?.['required']">
+                Username required.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control" type="password" formControlName="password" />
+            <!-- error -->
+            <div class="text-danger" *ngIf="formSubmitted && getForm['password'].errors?.['required']">
+                Password required
+            </div>
+        </div>
+        <div [ngClass]="{'alert alert-success': signUpResponse.type == 201, 'alert alert-danger': signUpResponse.type != 201}" role="alert" *ngIf="formChecked">
+            {{signUpResponse.msg}}
+        </div>
+        <div class="form-group">
+            <button class="btn btn-lg btn-block" type="submit">
+                Signup
+            </button>
+        </div>
+    </form>
+</div>
