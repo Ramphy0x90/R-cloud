@@ -1,0 +1,27 @@
+.navbar {
+    background-color: var(--app-main-dark);
+}
+
+.navbar a, .navbar i {
+    color: var(--app-main-green);
+}
+
+.navbar i {
+    font-size: 30px;
+}
+
+.navbar-nav {
+    margin-left: auto;
+}
+
+.navbar-nav .active {
+    color: var(--app-main-light-green);
+}
+
+.navbar-nav a {
+    transition: color var(--app-animation-time);
+}
+
+.navbar-nav a:hover {
+    color: var(--app-main-light-green);
+}
