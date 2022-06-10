@@ -4,7 +4,8 @@ const path = require('path')
 const fs = require('fs')
 
 router.route('/:path?').get((req, res, next) => {
-    let folderPath = path.join(`./public/${res.user.id}`, (req.params.path ? req.params.path : '/'));
+    let folderPath = path.join(`./public/${res.user.id}`, (req.query.path ? req.query.path : '/'));
+    let folderPublicPath = (req.query.path ? req.query.path : '/');
     let folders = {};
 
     try {
@@ -13,14 +14,14 @@ router.route('/:path?').get((req, res, next) => {
             
             folders[fileName] = {
                 isDir: fs.lstatSync(elementPath).isDirectory(),
-                path: elementPath
+                path: path.join(folderPublicPath, fileName)
             };
         });
     } catch (fsError) {
         return res.status(404).json({msg: 'Folder not found'});
     }
 
-    res.json(folders);
+    return res.status(200).json(folders);
 });
 
 router.route('/new').post((req, res, next) => {
