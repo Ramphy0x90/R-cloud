@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class UserService {
+  userLogged: boolean = false;
   baseUri: String = 'http://localhost:3435/api/user';
   headers: HttpHeaders = new HttpHeaders().set('content-type', 'application/json');
   userStatus: EventEmitter<boolean> = new EventEmitter;
@@ -24,6 +25,7 @@ export class UserService {
         this.saveLoggedUser(response.accessToken, response.id, response.userName);
         this.router.navigate(['app']);
         this.userStatus.emit(true);
+        this.userLogged = true;
 
         localStorage.removeItem('loginError');
       },
@@ -49,6 +51,7 @@ export class UserService {
     this.userStatus.emit(false);
     localStorage.clear();
     this.router.navigate(['home']);
+    this.userLogged = false;
   }
 
   getUserSTatus() {
