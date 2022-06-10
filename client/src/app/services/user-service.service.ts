@@ -15,7 +15,10 @@ export class UserService {
   constructor(private http: HttpClient, private router: Router) { }
 
   autoLogin() {
-    if(localStorage.getItem('token')) this.userStatus.emit(true);
+    if(localStorage.getItem('token')) {
+      this.userStatus.emit(true);
+      this.userLogged = true;
+    }
   }
 
   login(userData: any) {
