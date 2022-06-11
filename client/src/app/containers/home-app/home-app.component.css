@@ -1,0 +1,19 @@
+app-item-tools {
+    width: 100%;
+    margin-right: auto;
+}
+
+.nav-history, .items-container {
+    background-color: var(--app-main-dark);
+}
+
+.nav-history {
+    border-top: 1px solid var(--app-main-green);
+}
+
+.items-container {
+    display: grid;
+    height: 70vh;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-rows: repeat(4, 1fr);
+}

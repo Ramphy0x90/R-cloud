@@ -13,6 +13,8 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { HomeAppComponent } from './containers/home-app/home-app.component';
+import { ItemToolsComponent } from './components/item-tools/item-tools.component';
+import { ItemViewComponent } from './components/item-view/item-view.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { HomeAppComponent } from './containers/home-app/home-app.component';
     LoginFormComponent,
     SignupFormComponent,
     HomeAppComponent,
+    ItemToolsComponent,
+    ItemViewComponent,
   ],
   imports: [
     BrowserModule,

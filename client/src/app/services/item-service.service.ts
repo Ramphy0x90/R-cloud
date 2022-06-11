@@ -20,9 +20,9 @@ export class ItemService {
                                     .set('x-access-token', userToken);
   }
 
-  getContent(path: string = '') {
+  getContent(path?: string) {
     let queryParams = new HttpParams();
-    queryParams = queryParams.append("path", path);
+    queryParams = (path) ? queryParams.append("path", path) : queryParams;
 
     this.http.get(`${this.baseUri}`, {headers: this.headers, params: queryParams}).subscribe({
       next: (response) => {

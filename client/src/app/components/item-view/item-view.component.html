@@ -1,0 +1,7 @@
+<div class="container item-view-container text-center">
+    <div class="icon-container">
+        <i class="bi bi-folder-fill" *ngIf="item.isDir"></i>
+        <i class="bi bi-filetype-aac" [ngClass]="'bi bi-filetype-' + getExtencion(item.name)" *ngIf="!item.isDir"></i>
+    </div>
+    <p>{{item.name}}</p>
+</div>

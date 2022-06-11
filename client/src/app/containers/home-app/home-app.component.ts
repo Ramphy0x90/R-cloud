@@ -7,12 +7,17 @@ import { ItemService } from 'src/app/services/item-service.service';
   styleUrls: ['./home-app.component.css']
 })
 export class HomeAppComponent implements OnInit {
-  path: any;
+  path: {name: string, isDir: boolean; path: string; }[] = [];
   pathHistory: {folder: string, path: string}[] = [];
 
   constructor(private itemService: ItemService) {
     this.itemService.currentPath.subscribe((currentPath) => {
-      this.path = currentPath;
+      Object.entries(currentPath).find(([key, value]) => {
+        let folderParams: {isDir: boolean, path: string} | any = value;
+        this.path.push({
+          name: key, isDir: folderParams.isDir, path: folderParams.path 
+        })
+      });
     });
   }
 
@@ -20,18 +25,25 @@ export class HomeAppComponent implements OnInit {
     this.itemService.getContent();
   }
 
-  getContent(parent: string | any) {
+  getContent(parent: number) {
     let nextPath = this.path[parent].path;
-    this.pathHistory.push({folder: parent, path: nextPath});
+    let newPath = nextPath.substring(0, nextPath.length - this.path[parent].name.length);
+
+    this.pathHistory.push(
+      {folder: this.path[parent].name, path: newPath}
+    );
+
+    this.path = [];
 
     this.itemService.getContent(nextPath);
   }
 
   comeBack(folderTo: number) {
     let folderInfo = this.pathHistory[folderTo];
-    let newPath = folderInfo.path.substring(0, folderInfo.path.length - folderInfo.folder.length)
 
     this.pathHistory.splice(folderTo);
-    this.itemService.getContent(newPath);
+    
+    this.path = [];
+    this.itemService.getContent(folderInfo.path);
   }
 }

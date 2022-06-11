@@ -1,0 +1,8 @@
+.icon-container i {
+    font-size: 40px;
+    color: var(--app-main-dark-green);
+}
+
+.item-view-container p {
+    color: var(--app-main-light);
+}

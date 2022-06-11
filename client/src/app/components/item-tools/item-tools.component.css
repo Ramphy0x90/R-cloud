@@ -1,0 +1,11 @@
+.navbar {
+    background-color: var(--app-main-dark);
+}
+
+.navbar a, .navbar i {
+    color: var(--app-main-light);
+}
+
+.navbar-nav a:hover {
+    color: var(--app-main-green);
+}
