@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { UserService } from './user-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class ItemService {
   headers!: HttpHeaders;
   currentPath: EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private userService: UserService) {
     let userToken: any = '';
     
     if(undefined !== localStorage.getItem('token') !== null) {
@@ -29,7 +30,7 @@ export class ItemService {
         this.currentPath.emit(response);
       },
       error: (error) => {
-        console.log(error);
+        if(error.status == 401) this.userService.logOut();
       }
     });
   }
