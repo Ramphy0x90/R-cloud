@@ -1,10 +1,21 @@
+.container-fluid {
+    display: grid;
+    grid-template-rows: 100% auto;
+    overflow-x: scroll;
+}
+
 .image-container {
     background-image: url('../../../assets/home-bg.svg');
     background-size: cover;
 }
 
-.container-fluid {
-    overflow-x: scroll;
+.body-container {
+    display: grid;
+    margin: auto 0px;
+    padding: 5rem 0;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    justify-content: space-between;
+    place-items: center;
 }
 
 .home-title {
@@ -16,7 +27,9 @@
 }
 
 .info-container {
+    max-width: 330px;
     height: 170px;
+    margin: auto;
     background-color: var(--app-main-green);
 }
 
