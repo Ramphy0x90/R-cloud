@@ -17,4 +17,18 @@ app-item-tools {
     overflow-y: scroll;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     grid-template-rows: repeat(auto-fill, 100px);
+    grid-gap: 5px;
+}
+
+.items-container .select-item {
+    border-radius: 5px;
+    transition: background-color var(--app-animation-time);
+}
+
+.items-container .select-item:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.items-container .select-check i {
+    color: var(--app-main-green);
 }

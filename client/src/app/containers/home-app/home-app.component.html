@@ -1,5 +1,5 @@
 <div class="container mt-5 p-3">
-    <app-item-tools></app-item-tools>
+    <app-item-tools (buttonsEvent)="setItemToolsEvent($event)"></app-item-tools>
     <nav aria-label="breadcrumb" class="nav-history w-100 px-3 py-2  mb-3" *ngIf="pathHistory.length > 0">
         <ol class="breadcrumb m-0">
             <li class="breadcrumb-item" *ngFor="let item of pathHistory; let i = index">
@@ -8,8 +8,11 @@
         </ol>
     </nav>
 
-    <div class="container items-container items-container mt-3">
-        <div *ngFor="let item of path; let index = index">
+    <div class="container items-container items-container mt-3 pt-1">
+        <div class="select-item" *ngFor="let item of path; let index = index" (click)="selectedAction(item.path)">
+            <div class="select-check" *ngIf="btnEvents.onEdit">
+                <i [ngClass]="getSelectorClass(item.path)"></i>
+            </div>
             <app-item-view (click)="item.isDir && getContent(index)" [item]="item"></app-item-view>
         </div>
     </div>

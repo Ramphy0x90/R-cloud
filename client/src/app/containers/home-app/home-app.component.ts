@@ -9,6 +9,8 @@ import { ItemService } from 'src/app/services/item-service.service';
 export class HomeAppComponent implements OnInit {
   path: {name: string, isDir: boolean; path: string; }[] = [];
   pathHistory: {folder: string, path: string}[] = [];
+  btnEvents: {onNew: boolean, onUpload: boolean, onEdit: boolean} = {onNew: false, onUpload: false, onEdit: false};
+  selectedItems: string[] = [];
 
   constructor(private itemService: ItemService) {
     this.itemService.currentPath.subscribe((currentPath) => {
@@ -45,5 +47,22 @@ export class HomeAppComponent implements OnInit {
     
     this.path = [];
     this.itemService.getContent(folderInfo.path);
+  }
+
+  setItemToolsEvent(event: any) {
+    this.btnEvents = event;
+
+    if(!event.onEdit) this.selectedItems = [];
+  }
+
+  getSelectorClass(path: string) {
+    return (this.selectedItems.includes(path)) ? 'bi bi-circle-fill p-1' : 'bi bi-circle p-1';
+  }
+
+  selectedAction(itemPath: string) {
+    let elementIndex = this.selectedItems.indexOf(itemPath);
+
+    if(elementIndex != -1) this.selectedItems.splice(elementIndex);
+    else this.selectedItems.push(itemPath);
   }
 }
