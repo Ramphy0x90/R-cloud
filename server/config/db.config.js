@@ -1,3 +1,3 @@
 module.exports = {
-    url: 'mongodb://localhost:27017/r-cloud'
+    url: 'mongodb+srv://ramphy:YDP1mBqHcgavsrJk@cluster0.pkwgc.mongodb.net/?retryWrites=true&w=majority'
 }
