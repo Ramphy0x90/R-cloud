@@ -1,5 +1,8 @@
 # R-cloud
-Web App for file sharing
+Web App for file sharing (Like dropbox or mega)
+
+##
+Demo --> http://r-cloud.ramphy-svr.ch/#/home
 
 ## Technologies
 
