@@ -4,6 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { FileUploadModule } from 'ng2-file-upload';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './containers/home/home.component';
@@ -15,6 +19,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 import { HomeAppComponent } from './containers/home-app/home-app.component';
 import { ItemToolsComponent } from './components/item-tools/item-tools.component';
 import { ItemViewComponent } from './components/item-view/item-view.component';
+import { UploadModalComponent } from './components/upload-modal/upload-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,12 +33,16 @@ import { ItemViewComponent } from './components/item-view/item-view.component';
     HomeAppComponent,
     ItemToolsComponent,
     ItemViewComponent,
+    UploadModalComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    FileUploadModule
   ],
   providers: [],
   bootstrap: [AppComponent]

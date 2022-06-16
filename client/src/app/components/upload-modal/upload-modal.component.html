@@ -1,0 +1,21 @@
+<div class="modal-container">
+    <div id="upload-modal" class="item-modal" tabindex="-1" role="dialog" aria-labelledby="uploadModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLongTitle">File upload</h5>
+                <i class="bi bi-x" (click)="close()"></i>
+            </div>
+            <div class="modal-body">
+            <form>
+                <input type="file" name="file" ng2FileSelect [uploader]="uploader">
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">Upload</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

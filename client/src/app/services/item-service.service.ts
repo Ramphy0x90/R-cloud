@@ -1,6 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { UserService } from './user-service.service';
+import { FileUploader } from 'ng2-file-upload';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,12 @@ export class ItemService {
   headers!: HttpHeaders;
   currentPath: EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: HttpClient, private userService: UserService) {
+  public uploader: FileUploader = new FileUploader({
+    url: this.baseUri + '/upload',
+    itemAlias: 'file'
+  })
+
+  constructor(private http: HttpClient, private userService: UserService, private toastr: ToastrService) {
     let userToken: any = '';
     
     if(undefined !== localStorage.getItem('token') !== null) {
@@ -33,5 +40,15 @@ export class ItemService {
         if(error.status == 401) this.userService.logOut();
       }
     });
+  }
+
+  uploadFile() {
+    this.uploader.onAfterAddingAll = (file) => {
+      file.withCredentials = false;
+    };
+
+    this.uploader.onCompleteItem = (item: any, status: any) => {
+      this.toastr.success('File uploaded');
+    }
   }
 }

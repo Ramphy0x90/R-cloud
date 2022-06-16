@@ -76,3 +76,32 @@ body {
     color: var(--app-main-light);
     background-color: var(--app-main-dark-green);
 }
+
+.modal-container {
+    position: absolute;
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    place-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-header, .modal-footer {
+    background-color: var(--app-main-light-green);
+    padding: 10px 20px !important;
+}
+
+.modal-header i {
+    font-size: 30px;
+}
+
+.modal-body {
+    background-color: var(--app-main-dark);
+}
+
+.modal-container form {
+    margin: 0;
+    padding: 0;
+}

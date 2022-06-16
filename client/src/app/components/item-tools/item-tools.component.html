@@ -2,8 +2,10 @@
     <div class="container-fluid">
         <div class="navbar-nav">
           <a class="nav-link">New Folder</a>
-          <a class="nav-link">Upload File</a>
+          <a class="nav-link" (click)="setEvent('upload')">Upload File</a>
           <a class="nav-link" (click)="setEvent('edit')">Edit</a>
         </div>
     </div>
 </nav>
+
+<app-upload-modal *ngIf="buttons.onUpload" (uploadModalAction)="setUploadModalEvent($event)"></app-upload-modal>
