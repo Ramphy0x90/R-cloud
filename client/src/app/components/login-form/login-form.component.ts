@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
-import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-login-form',
@@ -9,6 +8,7 @@ import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent implements OnInit {
+  @Input() serviceResponce: any;
   @Output() formData: EventEmitter<any> = new EventEmitter();
   
   formSubmitted: boolean = false;
@@ -42,7 +42,8 @@ export class LoginFormComponent implements OnInit {
     } else {
       let submittedForm = this.formData.emit(this.loginForm.value);
 
-      if(localStorage.getItem('loginError')) this.invalidCredentials = true;
+      if(this.serviceResponce != 200) this.invalidCredentials = true;
+      else this.invalidCredentials = false;
 
       this.formSubmitted = false;
       this.loginForm.reset();

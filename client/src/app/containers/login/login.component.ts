@@ -8,7 +8,13 @@ import { UserService } from 'src/app/services/user-service.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  serviceResponse: any;
+
+  constructor(private userService: UserService) {
+    this.userService.userApiResponse.subscribe((response) => {
+      this.serviceResponse = response;
+    });
+  }
 
   ngOnInit(): void {
   }

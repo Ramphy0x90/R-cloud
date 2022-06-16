@@ -10,7 +10,7 @@ export class SignupComponent implements OnInit {
   signUpResponse: {type: number, msg: string} = {type: 0, msg: ''};
 
   constructor(private userService: UserService) {
-    this.userService.userSignUp.subscribe((status) => {
+    this.userService.userApiResponse.subscribe((status) => {
       this.setSignUpResponse(status);
     })
   }

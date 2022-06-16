@@ -14,7 +14,7 @@ const folderRoute = require('./routes/folder.route');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
+app.use(cors({origin: '*'}));
 
 app.use(express.static(frontUrl));
 app.use('/', express.static(frontUrl));
