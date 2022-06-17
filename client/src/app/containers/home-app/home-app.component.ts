@@ -14,6 +14,8 @@ export class HomeAppComponent implements OnInit {
 
   constructor(private itemService: ItemService) {
     this.itemService.currentPath.subscribe((currentPath) => {
+      this.path = [];
+      
       Object.entries(currentPath).find(([key, value]) => {
         let folderParams: {isDir: boolean, path: string} | any = value;
         this.path.push({

@@ -11,11 +11,9 @@ export class ItemService {
   baseUri: string = 'http://localhost:3435/api/folder';
   headers!: HttpHeaders;
   currentPath: EventEmitter<any> = new EventEmitter();
+  currentPathRef = '';
 
-  public uploader: FileUploader = new FileUploader({
-    url: this.baseUri + '/upload',
-    itemAlias: 'file'
-  })
+  public uploader!: FileUploader;
 
   constructor(private http: HttpClient, private userService: UserService, private toastr: ToastrService) {
     let userToken: any = '';
@@ -26,11 +24,26 @@ export class ItemService {
 
     this.headers = new HttpHeaders().set('content-type', 'apllication/json')
                                     .set('x-access-token', userToken);
+
+    this.uploader = new FileUploader({
+      headers: [{name: 'x-access-token', value: userToken}],
+      itemAlias: 'file'
+    });
+
+    this.uploader.onAfterAddingAll = (file) => {
+      file.withCredentials = false;
+    };
+
+    this.uploader.onCompleteItem = (item: any, status: any) => {
+      this.getContent(this.currentPathRef);
+      this.toastr.success('File uploaded');
+    }
   }
 
   getContent(path?: string) {
     let queryParams = new HttpParams();
     queryParams = (path) ? queryParams.append("path", path) : queryParams;
+    this.currentPathRef = (path) ? path : '/';
 
     this.http.get(`${this.baseUri}`, {headers: this.headers, params: queryParams}).subscribe({
       next: (response) => {
@@ -42,13 +55,8 @@ export class ItemService {
     });
   }
 
-  uploadFile() {
-    this.uploader.onAfterAddingAll = (file) => {
-      file.withCredentials = false;
-    };
-
-    this.uploader.onCompleteItem = (item: any, status: any) => {
-      this.toastr.success('File uploaded');
-    }
+  upload() {
+    this.uploader.setOptions({url: this.baseUri + '/upload?path=' + this.currentPathRef});
+    this.uploader.uploadAll();
   }
 }

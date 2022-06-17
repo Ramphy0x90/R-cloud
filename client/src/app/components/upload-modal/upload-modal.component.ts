@@ -18,6 +18,11 @@ export class UploadModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  upload() {
+    this.itemService.upload();
+    this.uploadModalAction.emit({action: 'close'});
+  }
+
   close() {
     this.uploadModalAction.emit({action: 'close'});
   }
