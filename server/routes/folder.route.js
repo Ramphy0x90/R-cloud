@@ -1,7 +1,22 @@
-const express = require('express');
+const express = require('express')
 const router = express.Router()
 const path = require('path')
 const fs = require('fs')
+const multer = require('multer')
+
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        let userId = (req.res.user.id) ? req.res.user.id : '';
+        let uploadPath = path.join('./public/', userId, req.query.path);
+        
+        cb(null, uploadPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+});
+
+let upload = multer({storage: storage});
 
 router.route('/:path?').get((req, res, next) => {
     let folderPath = path.join(`./public/${res.user.id}`, (req.query.path ? req.query.path : '/'));
@@ -36,6 +51,11 @@ router.route('/new').post((req, res, next) => {
     } else {
         res.json({msg: 'Folder already exists'});
     }
+});
+
+router.route('/upload/:path?').post(upload.single('file'), (req, res, next) => {
+    if(req.file) res.json({success: true});
+    else res.json({success: false});
 });
 
 router.route('/:path?').delete((req, res, next) => {
