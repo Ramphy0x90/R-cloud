@@ -4,6 +4,7 @@ const model = require('../models/user')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth.config')
+const fs = require('fs')
 
 router.route('/:id').get((req, res, next) => {
     model.findById(req.params.id, (error, data) => {
@@ -30,6 +31,15 @@ router.route('/login').post(async (req, res) => {
             userName: user.userName,
             accessToken: token
         });
+
+        let dir = './public/' + user._id;
+
+        if (!fs.existsSync(dir)) {
+            fs.mkdir(dir, {recursive: true}, (fsError) => {
+                if(fsError) next(fsError);
+            });
+        }
+
     } else {
         return res.status(401).json({msg: 'Invalid credentials'});
     }
@@ -47,6 +57,10 @@ router.route('/register').post(async (req, res) => {
     let newUser = await model.create({
         userName: userName, 
         password: encryptedPassword
+    });
+
+    fs.mkdir('./public/' + newUser._id, {recursive: true}, (fsError) => {
+        if(fsError) next(fsError);
     });
 
     return res.status(201).json(newUser);
