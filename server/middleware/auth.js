@@ -8,10 +8,10 @@ const checkToken = (req, res, next) => {
 
     jwt.verify(token, authConfig.secret, (error, decoded) => {
         if(error) res.status(401).json({msg: 'Invalid token'});
-        else res.user = decoded;
+        else req.user = decoded;
 
         return next();
-    });    
+    });
 }
 
 module.exports = checkToken;

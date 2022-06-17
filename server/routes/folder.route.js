@@ -6,9 +6,9 @@ const multer = require('multer')
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        let userId = (req.res.user.id) ? req.res.user.id : '';
+        let userId = (req.user.id) ? req.user.id : '';
         let uploadPath = path.join('./public/', userId, req.query.path);
-        
+
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
@@ -19,7 +19,7 @@ let storage = multer.diskStorage({
 let upload = multer({storage: storage});
 
 router.route('/:path?').get((req, res, next) => {
-    let folderPath = path.join(`./public/${res.user.id}`, (req.query.path ? req.query.path : '/'));
+    let folderPath = path.join(`./public/${req.user.id}`, (req.query.path ? req.query.path : '/'));
     let folderPublicPath = (req.query.path ? req.query.path : '/');
     let folders = {};
 
@@ -41,7 +41,7 @@ router.route('/:path?').get((req, res, next) => {
 
 router.route('/new').post((req, res, next) => {
     let folderName = req.body.name;
-    let folderPath = path.join(`./public/${res.user.id}`, req.body.path, folderName);
+    let folderPath = path.join(`./public/${req.user.id}`, req.body.path, folderName);
 
     if(!fs.existsSync(folderPath)){
         fs.mkdir(folderPath, {recursive: true}, (fsError) => {

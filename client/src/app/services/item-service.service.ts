@@ -10,23 +10,14 @@ import { ToastrService } from 'ngx-toastr';
 export class ItemService {
   baseUri: string = 'http://localhost:3435/api/folder';
   headers!: HttpHeaders;
+  userToken: string = '';
   currentPath: EventEmitter<any> = new EventEmitter();
   currentPathRef = '';
 
   public uploader!: FileUploader;
 
   constructor(private http: HttpClient, private userService: UserService, private toastr: ToastrService) {
-    let userToken: any = '';
-    
-    if(undefined !== localStorage.getItem('token') !== null) {
-      userToken = localStorage.getItem('token');
-    }
-
-    this.headers = new HttpHeaders().set('content-type', 'apllication/json')
-                                    .set('x-access-token', userToken);
-
     this.uploader = new FileUploader({
-      headers: [{name: 'x-access-token', value: userToken}],
       itemAlias: 'file'
     });
 
@@ -40,7 +31,23 @@ export class ItemService {
     }
   }
 
+  setUserAuthToken() {
+    let userToken: any = '';
+    
+    if(undefined !== localStorage.getItem('token') !== null) {
+      userToken = localStorage.getItem('token');
+    }
+
+    console.log(localStorage.getItem('userName'));
+    this.headers = new HttpHeaders().set('content-type', 'apllication/json')
+                                    .set('x-access-token', userToken);
+
+    this.userToken = userToken;
+  }
+
   getContent(path?: string) {
+    this.setUserAuthToken();
+
     let queryParams = new HttpParams();
     queryParams = (path) ? queryParams.append("path", path) : queryParams;
     this.currentPathRef = (path) ? path : '/';
@@ -56,7 +63,10 @@ export class ItemService {
   }
 
   upload() {
-    this.uploader.setOptions({url: this.baseUri + '/upload?path=' + this.currentPathRef});
+    this.uploader.setOptions({
+      url: this.baseUri + '/upload?path=' + this.currentPathRef,
+      headers: [{name: 'x-access-token', value: this.userToken}]
+    });
     this.uploader.uploadAll();
   }
 }
