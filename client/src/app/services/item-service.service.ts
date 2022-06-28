@@ -51,7 +51,7 @@ export class ItemService {
     queryParams = (path) ? queryParams.append("path", path) : queryParams;
     this.currentPathRef = (path) ? path : '/';
 
-    this.http.get(`${this.baseUri}`, {headers: this.headers, params: queryParams}).subscribe({
+    this.http.get(`${this.baseUri}/fetch/`, {headers: this.headers, params: queryParams}).subscribe({
       next: (response) => {
         this.currentPath.emit(response);
       },
@@ -67,5 +67,21 @@ export class ItemService {
       headers: [{name: 'x-access-token', value: this.userToken}]
     });
     this.uploader.uploadAll();
+  }
+
+  download(itemPath: string) {
+    this.setUserAuthToken();
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("item", itemPath);
+
+    this.http.get(`${this.baseUri}/download/`, {headers: this.headers, params: queryParams}).subscribe({
+      next: (response) => {
+        console.log('SII', response);
+      },
+      error: (error) => {
+        console.log('NOOO ', error);
+      }
+    });
   }
 }

@@ -18,7 +18,7 @@ let storage = multer.diskStorage({
 
 let upload = multer({storage: storage});
 
-router.route('/:path?').get((req, res, next) => {
+router.route('/fetch/:path?').get((req, res, next) => {
     let folderPath = path.join(`./public/${req.user.id}`, (req.query.path ? req.query.path : '/'));
     let folderPublicPath = (req.query.path ? req.query.path : '/');
     let folders = {};
@@ -56,6 +56,25 @@ router.route('/new').post((req, res, next) => {
 router.route('/upload/:path?').post(upload.single('file'), (req, res, next) => {
     if(req.file) res.json({success: true});
     else res.json({success: false});
+});
+
+router.route('/download/:item?').get((req, res, next) => {
+    let itemPath = path.join(`./public/${req.user.id}`, (req.query.item));
+
+    console.log('sdfdsfsfsfd');
+
+    if(fs.lstatSync(itemPath).isDirectory()) {
+        const childProcess = require('child_process');
+
+        childProcess.execSync(`zip -r archive *`, {cwd: itemPath});
+        res.download(itemPath + '.zip');
+
+    } else {
+        console.log(itemPath);
+        res.download(itemPath);
+    }
+
+    res.status(200);
 });
 
 router.route('/:path?').delete((req, res, next) => {

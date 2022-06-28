@@ -9,7 +9,7 @@ import { ItemService } from 'src/app/services/item-service.service';
 export class HomeAppComponent implements OnInit {
   path: {name: string, isDir: boolean; path: string; }[] = [];
   pathHistory: {folder: string, path: string}[] = [];
-  btnEvents: {onNew: boolean, onUpload: boolean, onEdit: boolean} = {onNew: false, onUpload: false, onEdit: false};
+  btnEvents: {onNew: boolean, onUpload: boolean, onEdit: boolean, onDownload: boolean} = {onNew: false, onUpload: false, onEdit: false, onDownload: false};
   selectedItems: string[] = [];
 
   constructor(private itemService: ItemService) {
@@ -53,6 +53,14 @@ export class HomeAppComponent implements OnInit {
 
   setItemToolsEvent(event: any) {
     this.btnEvents = event;
+
+    console.log(event);
+
+    if(this.btnEvents.onDownload) {
+      this.selectedItems.forEach((item) => {
+        this.itemService.download(item);
+      })
+    }
 
     if(!event.onEdit) this.selectedItems = [];
   }
