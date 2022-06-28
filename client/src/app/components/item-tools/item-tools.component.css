@@ -2,10 +2,21 @@
     background-color: var(--app-main-dark);
 }
 
+.navbar a {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar i {
+    font-size: 25px;
+}
+
 .navbar a, .navbar i {
     color: var(--app-main-light);
 }
 
-.navbar-nav a:hover {
+.navbar-nav a:hover, .navbar-nav i:hover {
     color: var(--app-main-green);
 }
