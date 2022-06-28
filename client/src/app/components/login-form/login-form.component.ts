@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
 
@@ -7,7 +7,7 @@ import { Output, EventEmitter } from '@angular/core';
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent implements OnInit, OnChanges {
   @Input() serviceResponce: any;
   @Output() formData: EventEmitter<any> = new EventEmitter();
   
@@ -21,6 +21,12 @@ export class LoginFormComponent implements OnInit {
     this.form();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.serviceResponce = changes['serviceResponce'].currentValue;
+
+    this.setUserMessage();
+  }
+
   form() {
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.required]],
@@ -30,6 +36,11 @@ export class LoginFormComponent implements OnInit {
 
   get getForm() {
     return this.loginForm.controls;
+  }
+
+  setUserMessage() {
+    if(this.serviceResponce != 200 && this.serviceResponce != undefined) this.invalidCredentials = true;
+    else this.invalidCredentials = false;
   }
 
   submit() {
@@ -42,8 +53,7 @@ export class LoginFormComponent implements OnInit {
     } else {
       let submittedForm = this.formData.emit(this.loginForm.value);
 
-      if(this.serviceResponce != 200) this.invalidCredentials = true;
-      else this.invalidCredentials = false;
+      this.setUserMessage();
 
       this.formSubmitted = false;
       this.loginForm.reset();

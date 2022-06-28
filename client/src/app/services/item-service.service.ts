@@ -38,7 +38,6 @@ export class ItemService {
       userToken = localStorage.getItem('token');
     }
 
-    console.log(localStorage.getItem('userName'));
     this.headers = new HttpHeaders().set('content-type', 'apllication/json')
                                     .set('x-access-token', userToken);
 
