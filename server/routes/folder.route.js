@@ -58,27 +58,24 @@ router.route('/upload/:path?').post(upload.single('file'), (req, res, next) => {
     else res.json({success: false});
 });
 
-router.route('/download/:item?').get((req, res, next) => {
-    let itemPath = path.join(`./public/${req.user.id}`, (req.query.item));
-
-    console.log('sdfdsfsfsfd');
+router.route('/download/').get((req, res, next) => {
+    let itemPath = path.join(__dirname, `../public/${req.user.id}`, (req.query.item));
 
     if(fs.lstatSync(itemPath).isDirectory()) {
         const childProcess = require('child_process');
 
         childProcess.execSync(`zip -r archive *`, {cwd: itemPath});
         res.download(itemPath + '.zip');
-
     } else {
-        console.log(itemPath);
-        res.download(itemPath);
+        res.download(itemPath, function(err) {
+            if(err) res.json(err);
+            else res.status(200);
+        });
     }
-
-    res.status(200);
 });
 
 router.route('/:path?').delete((req, res, next) => {
-    let folderPath = path.join('./public/user-id', req.query.path);
+    let folderPath = path.join('./public/user-id', req.body.path);
 
     fs.rm(folderPath, {recursive: true}, (fsError) => {
         if(fsError) next(fsError);

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { UserService } from './user-service.service';
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
+import { FileSaverService } from 'ngx-filesaver';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ItemService {
 
   public uploader!: FileUploader;
 
-  constructor(private http: HttpClient, private userService: UserService, private toastr: ToastrService) {
+  constructor(private http: HttpClient, private userService: UserService, private toastr: ToastrService, private fileSaver: FileSaverService) {
     this.uploader = new FileUploader({
       itemAlias: 'file'
     });
@@ -76,7 +77,8 @@ export class ItemService {
     queryParams = queryParams.append("item", itemPath);
 
     this.http.get(`${this.baseUri}/download/`, {headers: this.headers, params: queryParams}).subscribe({
-      next: (response) => {
+      next: (response: any) => {
+        this.fileSaver.save(response._body, 'test');
         console.log('SII', response);
       },
       error: (error) => {

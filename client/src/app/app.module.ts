@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { FileUploadModule } from 'ng2-file-upload';
+import { FileSaverModule } from 'ngx-filesaver';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,7 +43,8 @@ import { UploadModalComponent } from './components/upload-modal/upload-modal.com
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    FileUploadModule
+    FileUploadModule,
+    FileSaverModule
   ],
   providers: [],
   bootstrap: [AppComponent]
