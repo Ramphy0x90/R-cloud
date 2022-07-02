@@ -59,7 +59,7 @@ router.route('/upload/:path?').post(upload.single('file'), (req, res, next) => {
 });
 
 router.route('/download/').get((req, res, next) => {
-    let itemPath = path.join(__dirname, `../public/${req.user.id}`, (req.query.item));
+    let itemPath = path.join(`./public/${req.user.id}`, (req.query.item));
 
     if(fs.lstatSync(itemPath).isDirectory()) {
         const childProcess = require('child_process');
@@ -68,8 +68,7 @@ router.route('/download/').get((req, res, next) => {
         res.download(itemPath + '.zip');
     } else {
         res.download(itemPath, function(err) {
-            if(err) res.json(err);
-            else res.status(200);
+            if(err) next(err);
         });
     }
 });

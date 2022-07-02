@@ -10,7 +10,7 @@ export class HomeAppComponent implements OnInit {
   path: {name: string, isDir: boolean; path: string; }[] = [];
   pathHistory: {folder: string, path: string}[] = [];
   btnEvents: {onNew: boolean, onUpload: boolean, onEdit: boolean, onDownload: boolean} = {onNew: false, onUpload: false, onEdit: false, onDownload: false};
-  selectedItems: string[] = [];
+  selectedItems: {name: string, path: string}[] = [];
 
   constructor(private itemService: ItemService) {
     this.itemService.currentPath.subscribe((currentPath) => {
@@ -54,25 +54,37 @@ export class HomeAppComponent implements OnInit {
   setItemToolsEvent(event: any) {
     this.btnEvents = event;
 
-    console.log(event);
-
     if(this.btnEvents.onDownload) {
       this.selectedItems.forEach((item) => {
         this.itemService.download(item);
-      })
+      });
+
+      this.selectedItems = []
     }
 
     if(!event.onEdit) this.selectedItems = [];
   }
 
-  getSelectorClass(path: string) {
-    return (this.selectedItems.includes(path)) ? 'bi bi-circle-fill p-1' : 'bi bi-circle p-1';
+  getSelectorClass(item: {name: string, path: string}) {
+    let itemSelected = false;
+
+    this.selectedItems.forEach((selectedItem) => {
+      if(selectedItem.path == item.path) itemSelected = true;
+    });
+
+    return (itemSelected) ? 'bi bi-circle-fill p-1' : 'bi bi-circle p-1';
   }
 
-  selectedAction(itemPath: string) {
-    let elementIndex = this.selectedItems.indexOf(itemPath);
+  selectedAction(item: {name: string, path: string}) {
+    let itemSelected = false;
 
-    if(elementIndex != -1) this.selectedItems.splice(elementIndex);
-    else this.selectedItems.push(itemPath);
+    this.selectedItems.forEach((selectedItem, index) => {
+      if(selectedItem.path == item.path){
+        this.selectedItems.splice(index);
+        itemSelected = true;
+      }
+    });
+
+    if(!itemSelected) this.selectedItems.push({name: item.name, path: item.path});
   }
 }

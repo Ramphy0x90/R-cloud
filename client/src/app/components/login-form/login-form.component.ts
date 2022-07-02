@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -13,9 +13,9 @@ export class LoginFormComponent implements OnInit, OnChanges {
   
   formSubmitted: boolean = false;
   invalidCredentials: boolean = false;
-  loginForm!: FormGroup;
+  loginForm!: UntypedFormGroup;
 
-  constructor(public formBuilder: FormBuilder) { }
+  constructor(public formBuilder: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.form();

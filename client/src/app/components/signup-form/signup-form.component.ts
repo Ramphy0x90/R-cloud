@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signup-form',
@@ -12,9 +12,9 @@ export class SignupFormComponent implements OnInit {
 
   formSubmitted: boolean = false;
   formChecked: boolean = false;
-  signUpForm!: FormGroup;
+  signUpForm!: UntypedFormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.form();

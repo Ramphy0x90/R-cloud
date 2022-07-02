@@ -70,19 +70,18 @@ export class ItemService {
     this.uploader.uploadAll();
   }
 
-  download(itemPath: string) {
+  download(item: {name: string, path: string}) {
     this.setUserAuthToken();
 
     let queryParams = new HttpParams();
-    queryParams = queryParams.append("item", itemPath);
+    queryParams = queryParams.append('item', item.path);
 
-    this.http.get(`${this.baseUri}/download/`, {headers: this.headers, params: queryParams}).subscribe({
-      next: (response: any) => {
-        this.fileSaver.save(response._body, 'test');
-        console.log('SII', response);
+    this.http.get(`${this.baseUri}/download/`, {headers: this.headers, params: queryParams, responseType: 'blob'}).subscribe({
+      next: (response) => {
+        this.fileSaver.save(response, item.name);
       },
       error: (error) => {
-        console.log('NOOO ', error);
+        console.log(error);
       }
     });
   }
