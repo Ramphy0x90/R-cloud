@@ -1,13 +1,13 @@
 <nav class="navbar navbar-expand">
     <div class="container-fluid">
         <div class="navbar-nav">
-          <a class="nav-link mx-3" *ngIf="buttons.onEdit"><i class="bi bi-trash3"></i></a>
-          <a class="nav-link mx-3" (click)="setEvent('download')" *ngIf="buttons.onEdit"><i class="bi bi-download"></i></a>
-          <a class="nav-link mx-3" *ngIf="!buttons.onEdit"><i class="bi bi-folder-plus"></i></a>
-          <a class="nav-link mx-3" (click)="setEvent('upload')" *ngIf="!buttons.onEdit"><i class="bi bi-cloud-upload"></i></a>
+          <a class="nav-link mx-3" *ngIf="buttonsEvent.onEdit"><i class="bi bi-trash3"></i></a>
+          <a class="nav-link mx-3" (click)="setEvent('download')" *ngIf="buttonsEvent.onEdit"><i class="bi bi-download"></i></a>
+          <a class="nav-link mx-3" *ngIf="!buttonsEvent.onEdit"><i class="bi bi-folder-plus"></i></a>
+          <a class="nav-link mx-3" (click)="setEvent('upload')" *ngIf="!buttonsEvent.onEdit"><i class="bi bi-cloud-upload"></i></a>
           <a class="nav-link mx-3" (click)="setEvent('edit')">Edit</a>
         </div>
     </div>
 </nav>
 
-<app-upload-modal *ngIf="buttons.onUpload" (uploadModalAction)="setUploadModalEvent($event)"></app-upload-modal>
+<app-upload-modal *ngIf="buttonsEvent.onUpload" (uploadModalAction)="setUploadModalEvent($event)"></app-upload-modal>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-item-tools',
@@ -6,8 +6,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./item-tools.component.css']
 })
 export class ItemToolsComponent implements OnInit {
-  @Output() buttonsEvent = new EventEmitter<{onNew: boolean, onUpload: boolean, onEdit: boolean, onDownload: boolean}>();
-  buttons = {onNew: false, onUpload: false, onEdit: false, onDownload: false};
+  @Input() buttonsEvent!: {onNew: boolean, onUpload: boolean, onEdit: boolean, onDownload: boolean};
+  @Output() buttonsEventChange = new EventEmitter<{onNew: boolean, onUpload: boolean, onEdit: boolean, onDownload: boolean}>();
 
   constructor() {
 
@@ -17,17 +17,19 @@ export class ItemToolsComponent implements OnInit {
   }
 
   setEvent(btn: string) {
-    if(btn == 'edit') this.buttons.onEdit = !this.buttons.onEdit;
-    if(btn == 'upload') this.buttons.onUpload = true;
-    if(btn == 'download') this.buttons.onDownload = true;
+    if(btn == 'edit') this.buttonsEvent.onEdit = !this.buttonsEvent.onEdit;
+    if(btn == 'upload') this.buttonsEvent.onUpload = true;
+    if(btn == 'download') this.buttonsEvent.onDownload = true;
 
-    this.buttonsEvent.emit(this.buttons);
+    this.buttonsEventChange.emit(this.buttonsEvent);
 
-    this.buttons.onDownload = false;
+    console.log(this.buttonsEvent);
+
+    this.buttonsEvent.onDownload = false;
   }
 
   setUploadModalEvent(event: any) {
-    if(event.action == 'close') this.buttons.onUpload = false;
+    if(event.action == 'close') this.buttonsEvent.onUpload = false;
   }
 
 }
