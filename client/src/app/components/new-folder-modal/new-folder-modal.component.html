@@ -1,0 +1,21 @@
+<div class="modal-container">
+    <div id="new-folder-modal" class="item-modal" tabindex="-1" role="dialog" aria-labelledby="newFolderModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newFolderModalLongTitle">Create new Folder</h5>
+                <i class="bi bi-x" (click)="close()"></i>
+            </div>
+            <div class="container modal-body">
+                <form>
+                    <input type="text" placeholder="Folder name" [(ngModel)]="folderName">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="create()" [disabled]="!folderName.length">Create</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

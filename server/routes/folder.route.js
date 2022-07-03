@@ -39,9 +39,9 @@ router.route('/fetch/:path?').get((req, res, next) => {
     return res.status(200).json(folders);
 });
 
-router.route('/new').post((req, res, next) => {
-    let folderName = req.body.name;
-    let folderPath = path.join(`./public/${req.user.id}`, req.body.path, folderName);
+router.route('/new').post(async (req, res) => {
+    let {folderRefPath, folderName} = req.query;
+    let folderPath = path.join(`./public/${req.user.id}`, folderRefPath, folderName);
 
     if(!fs.existsSync(folderPath)){
         fs.mkdir(folderPath, {recursive: true}, (fsError) => {

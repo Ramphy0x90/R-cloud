@@ -22,6 +22,7 @@ import { HomeAppComponent } from './containers/home-app/home-app.component';
 import { ItemToolsComponent } from './components/item-tools/item-tools.component';
 import { ItemViewComponent } from './components/item-view/item-view.component';
 import { UploadModalComponent } from './components/upload-modal/upload-modal.component';
+import { NewFolderModalComponent } from './components/new-folder-modal/new-folder-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { UploadModalComponent } from './components/upload-modal/upload-modal.com
     ItemToolsComponent,
     ItemViewComponent,
     UploadModalComponent,
+    NewFolderModalComponent,
   ],
   imports: [
     BrowserModule,

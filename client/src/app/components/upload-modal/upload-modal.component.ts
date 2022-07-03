@@ -20,7 +20,7 @@ export class UploadModalComponent implements OnInit {
 
   upload() {
     this.itemService.upload();
-    this.uploadModalAction.emit({action: 'close'});
+    this.close();
   }
 
   close() {

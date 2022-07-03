@@ -6,8 +6,8 @@ import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
   styleUrls: ['./item-tools.component.css']
 })
 export class ItemToolsComponent implements OnInit {
-  @Input() buttonsEvent!: {onNew: boolean, onUpload: boolean, onEdit: boolean, onDownload: boolean};
-  @Output() buttonsEventChange = new EventEmitter<{onNew: boolean, onUpload: boolean, onEdit: boolean, onDownload: boolean}>();
+  @Input() buttonsEvent!: {onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean};
+  @Output() buttonsEventChange = new EventEmitter<{onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean}>();
 
   constructor() {
 
@@ -17,19 +17,27 @@ export class ItemToolsComponent implements OnInit {
   }
 
   setEvent(btn: string) {
+    if(btn == 'new') this.buttonsEvent.onNew.status = true;
     if(btn == 'edit') this.buttonsEvent.onEdit = !this.buttonsEvent.onEdit;
     if(btn == 'upload') this.buttonsEvent.onUpload = true;
     if(btn == 'download') this.buttonsEvent.onDownload = true;
 
     this.buttonsEventChange.emit(this.buttonsEvent);
-
-    console.log(this.buttonsEvent);
-
-    this.buttonsEvent.onDownload = false;
   }
 
   setUploadModalEvent(event: any) {
     if(event.action == 'close') this.buttonsEvent.onUpload = false;
+  }
+
+  setNewFolderModalEvent(event: any) {
+    if(event.action == 'new') {
+      console.log(event.value);
+      this.buttonsEvent.onNew.value = event.value;
+
+      this.buttonsEventChange.emit(this.buttonsEvent);
+    }
+
+    if(event.action == 'close') this.buttonsEvent.onNew.status = false;
   }
 
 }

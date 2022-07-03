@@ -4,6 +4,7 @@ import { UserService } from './user-service.service';
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
 import { FileSaverService } from 'ngx-filesaver';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class ItemService {
 
   public uploader!: FileUploader;
 
-  constructor(private http: HttpClient, private userService: UserService, private toastr: ToastrService, private fileSaver: FileSaverService) {
+  constructor(private http: HttpClient, private userService: UserService, private toastr: ToastrService, private fileSaver: FileSaverService, private router: Router) {
     this.uploader = new FileUploader({
       itemAlias: 'file'
     });
@@ -37,6 +38,8 @@ export class ItemService {
     
     if(undefined !== localStorage.getItem('token') !== null) {
       userToken = localStorage.getItem('token');
+    } else {
+      this.router.navigate(['login']);
     }
 
     this.headers = new HttpHeaders().set('content-type', 'apllication/json')
@@ -60,6 +63,25 @@ export class ItemService {
         if(error.status == 401) this.userService.logOut();
       }
     });
+  }
+
+  newFolder(folderName: string) {
+    this.setUserAuthToken();
+
+    const params = new HttpParams()
+      .set('folderRefPath', this.currentPathRef)
+      .set('folderName', folderName);
+
+    this.http.post<any>(`${this.baseUri}/new`, {test: 'test'}, {headers: this.headers, params: params}).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+
+    this.getContent(this.currentPathRef);
   }
 
   upload() {
