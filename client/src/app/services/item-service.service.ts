@@ -92,6 +92,24 @@ export class ItemService {
     this.uploader.uploadAll();
   }
 
+  delete(item: {name: string, path: string}) {
+    this.setUserAuthToken();
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append('path', item.path);
+
+    this.http.delete(`${this.baseUri}/`, {headers: this.headers, params: queryParams}).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+
+    this.getContent(this.currentPathRef);
+  }
+
   download(item: {name: string, path: string}) {
     this.setUserAuthToken();
 

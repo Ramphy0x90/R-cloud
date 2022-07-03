@@ -73,12 +73,12 @@ router.route('/download/').get((req, res, next) => {
     }
 });
 
-router.route('/:path?').delete((req, res, next) => {
-    let folderPath = path.join('./public/user-id', req.body.path);
+router.route('/:path?').delete(async (req, res, next) => {
+    let folderPath = path.join(`./public/${req.user.id}`, req.query.path);
 
     fs.rm(folderPath, {recursive: true}, (fsError) => {
         if(fsError) next(fsError);
-        res.status(200).json({msg: 'Folder removed'});
+        res.status(200).json({msg: 'Item deleted'});
     });
 });
 

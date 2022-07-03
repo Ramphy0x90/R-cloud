@@ -6,8 +6,8 @@ import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
   styleUrls: ['./item-tools.component.css']
 })
 export class ItemToolsComponent implements OnInit {
-  @Input() buttonsEvent!: {onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean};
-  @Output() buttonsEventChange = new EventEmitter<{onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean}>();
+  @Input() buttonsEvent!: {onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean, onDelete: boolean};
+  @Output() buttonsEventChange = new EventEmitter<{onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean, onDelete: boolean}>();
 
   constructor() {
 
@@ -21,6 +21,7 @@ export class ItemToolsComponent implements OnInit {
     if(btn == 'edit') this.buttonsEvent.onEdit = !this.buttonsEvent.onEdit;
     if(btn == 'upload') this.buttonsEvent.onUpload = true;
     if(btn == 'download') this.buttonsEvent.onDownload = true;
+    if(btn == 'delete') this.buttonsEvent.onDelete = true;
 
     this.buttonsEventChange.emit(this.buttonsEvent);
   }

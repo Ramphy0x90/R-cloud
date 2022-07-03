@@ -9,7 +9,7 @@ import { ItemService } from 'src/app/services/item-service.service';
 export class HomeAppComponent implements OnInit {
   path: {name: string, isDir: boolean; path: string; }[] = [];
   pathHistory: {folder: string, path: string}[] = [];
-  buttonsEvent: {onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean} = {onNew: {status: false, value: ''}, onUpload: false, onEdit: false, onDownload: false};
+  buttonsEvent: {onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean, onDelete: boolean} = {onNew: {status: false, value: ''}, onUpload: false, onEdit: false, onDownload: false, onDelete: false};
   selectedItems: {name: string, path: string}[] = [];
 
   constructor(private itemService: ItemService) {
@@ -54,7 +54,6 @@ export class HomeAppComponent implements OnInit {
   setItemToolsEvent(event: any) {
     this.buttonsEvent = event;
 
-    console.log(this.buttonsEvent)
     if(this.buttonsEvent.onNew.status && this.buttonsEvent.onNew.value != '') {
       this.itemService.newFolder(this.buttonsEvent.onNew.value);
       this.buttonsEvent.onNew.status = false;
@@ -69,6 +68,16 @@ export class HomeAppComponent implements OnInit {
       this.selectedItems = []
       this.buttonsEvent.onEdit = false;
       this.buttonsEvent.onDownload = false;
+    }
+
+    if(this.buttonsEvent.onDelete) {
+      this.selectedItems.forEach((item) => {
+        this.itemService.delete(item);
+      });
+
+      this.selectedItems = []
+      this.buttonsEvent.onEdit = false;
+      this.buttonsEvent.onDelete = false;
     }
 
     if(!event.onEdit) this.selectedItems = [];
