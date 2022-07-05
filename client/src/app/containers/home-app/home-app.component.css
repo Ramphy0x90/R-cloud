@@ -14,13 +14,16 @@ app-item-tools {
 .items-container {
     display: grid;
     height: 70vh;
+    padding: 20px;
     overflow-y: scroll;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     grid-template-rows: repeat(auto-fill, 100px);
-    grid-gap: 5px;
+    grid-gap: 15px;
 }
 
 .items-container .select-item {
+    margin: 0 5px;
+    padding: 10px;
     border-radius: 5px;
     transition: background-color var(--app-animation-time);
 }

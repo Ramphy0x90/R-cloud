@@ -8,12 +8,12 @@
         </ol>
     </nav>
 
-    <div class="container items-container items-container mt-3 pt-1">
+    <div class="container items-container items-container mt-3">
         <div class="select-item" *ngFor="let item of path; let index = index" (click)="selectedAction(item)">
             <div class="select-check" *ngIf="buttonsEvent.onEdit">
                 <i [ngClass]="getSelectorClass(item)"></i>
             </div>
-            <app-item-view (click)="item.isDir && getContent(index)" [item]="item"></app-item-view>
+            <app-item-view (click)="item.isDir && !buttonsEvent.onEdit  && getContent(index)" [item]="item"></app-item-view>
         </div>
     </div>
 </div>
