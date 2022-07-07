@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemService } from 'src/app/services/item-service.service';
+import { ItemToolsEvents } from '../../models/ItemToolsEvents.model';
 
 @Component({
   selector: 'app-home-app',
@@ -9,7 +10,7 @@ import { ItemService } from 'src/app/services/item-service.service';
 export class HomeAppComponent implements OnInit {
   path: {name: string, isDir: boolean; path: string; }[] = [];
   pathHistory: {folder: string, path: string}[] = [];
-  buttonsEvent: {onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean, onDelete: boolean} = {onNew: {status: false, value: ''}, onUpload: false, onEdit: false, onDownload: false, onDelete: false};
+  buttonsEvent: ItemToolsEvents = {onNew: {status: false, value: ''}, onUpload: false, onEdit: false, onDownload: false, onDelete: false};
   selectedItems: {name: string, path: string}[] = [];
 
   constructor(private itemService: ItemService) {

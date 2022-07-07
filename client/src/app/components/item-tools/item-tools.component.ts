@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
+import { ItemToolsEvents } from '../../models/ItemToolsEvents.model';
 
 @Component({
   selector: 'app-item-tools',
@@ -6,16 +7,17 @@ import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
   styleUrls: ['./item-tools.component.css']
 })
 export class ItemToolsComponent implements OnInit {
-  @Input() buttonsEvent!: {onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean, onDelete: boolean};
-  @Output() buttonsEventChange = new EventEmitter<{onNew: {status: boolean, value: string}, onUpload: boolean, onEdit: boolean, onDownload: boolean, onDelete: boolean}>();
+  @Input() buttonsEvent!: ItemToolsEvents;
+  @Output() buttonsEventChange = new EventEmitter<ItemToolsEvents>();
 
-  constructor() {
+  constructor() { }
 
-  }
+  ngOnInit(): void { }
 
-  ngOnInit(): void {
-  }
-
+  /**
+   * Set button event based on clicked button
+   * @param btn 
+   */
   setEvent(btn: string) {
     if(btn == 'new') this.buttonsEvent.onNew.status = true;
     if(btn == 'edit') this.buttonsEvent.onEdit = !this.buttonsEvent.onEdit;
@@ -26,13 +28,20 @@ export class ItemToolsComponent implements OnInit {
     this.buttonsEventChange.emit(this.buttonsEvent);
   }
 
+  /**
+   * Function called inside the upload modal
+   * @param event 
+   */
   setUploadModalEvent(event: any) {
     if(event.action == 'close') this.buttonsEvent.onUpload = false;
   }
 
+  /**
+   * Show modal to create new folder
+   * @param event 
+   */
   setNewFolderModalEvent(event: any) {
     if(event.action == 'new') {
-      console.log(event.value);
       this.buttonsEvent.onNew.value = event.value;
 
       this.buttonsEventChange.emit(this.buttonsEvent);
