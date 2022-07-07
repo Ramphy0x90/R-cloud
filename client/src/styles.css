@@ -97,6 +97,10 @@ body {
     font-size: 30px;
 }
 
+.modal-title {
+    color: var(--app-main-light);
+}
+
 .modal-body {
     background-color: var(--app-main-dark);
 }
