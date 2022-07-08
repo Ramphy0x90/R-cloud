@@ -21,7 +21,15 @@ export class HomeAppComponent implements OnInit {
         let folderParams: {isDir: boolean, path: string} | any = value;
         this.path.push({
           name: key, isDir: folderParams.isDir, path: folderParams.path 
-        })
+        });
+
+        this.path.sort((itemA, itemB) => {
+          if (itemA.isDir !== itemB.isDir) {
+            return Number(itemB.isDir) - Number(itemA.isDir);
+          } else {
+            return 1;
+          }
+        });
       });
     });
   }
