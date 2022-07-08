@@ -72,12 +72,12 @@ export class ItemService {
       .set('folderRefPath', this.currentPathRef)
       .set('folderName', folderName);
 
-    this.http.post<any>(`${this.baseUri}/new`, {test: 'test'}, {headers: this.headers, params: params}).subscribe({
+    this.http.post<any>(`${this.baseUri}/new`, null, {headers: this.headers, params: params}).subscribe({
       next: (response) => {
-        console.log(response);
+        this.toastr.success(`Folder "${folderName}" created`);
       },
       error: (error) => {
-        console.log(error);
+        this.toastr.error('Folder creation error');
       }
     });
 
@@ -100,10 +100,10 @@ export class ItemService {
 
     this.http.delete(`${this.baseUri}/`, {headers: this.headers, params: queryParams}).subscribe({
       next: (response) => {
-        console.log(response);
+        this.toastr.success('Item deleted');
       },
       error: (error) => {
-        console.log(error);
+        this.toastr.error('Item delete error');
       }
     });
 
