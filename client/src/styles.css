@@ -57,8 +57,9 @@ body {
 
 .container form input {
     background-color: var(--app-main-dark-green);
-    border-radius: 0;
     color: var(--app-main-dark);
+    border: 1px solid var(--app-main-light);
+    border-radius: 0;
 }
 
 .container form input:focus {
@@ -77,6 +78,9 @@ body {
     background-color: var(--app-main-dark-green);
 }
 
+/**
+* Style for upload modal and folder creation modal
+*/
 .modal-container {
     position: absolute;
     display: grid;

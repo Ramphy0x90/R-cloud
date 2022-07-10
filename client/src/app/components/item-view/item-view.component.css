@@ -1,6 +1,6 @@
 .item-view-container {
     display: grid;
-    grid-template-rows: auto 24px;
+    grid-template-rows: auto minmax(50px, .5fr);
 }
 
 .icon-container i {
@@ -9,7 +9,7 @@
 }
 
 .item-view-container p {
-    width: 100%;
+    max-width: 100px;
     height: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
