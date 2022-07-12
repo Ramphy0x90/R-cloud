@@ -3,6 +3,7 @@ const router = express.Router()
 const path = require('path')
 const fs = require('fs')
 const multer = require('multer')
+const zip = require('zip-a-folder');
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -58,14 +59,15 @@ router.route('/upload/:path?').post(upload.single('file'), (req, res, next) => {
     else res.json({success: false});
 });
 
-router.route('/download/').get((req, res, next) => {
+router.route('/download/').get(async (req, res, next) => {
     let itemPath = path.join(`./public/${req.user.id}`, (req.query.item));
 
     if(fs.lstatSync(itemPath).isDirectory()) {
-        const childProcess = require('child_process');
-
-        childProcess.execSync(`zip -r archive *`, {cwd: itemPath});
-        res.download(itemPath + '.zip');
+        await zip.zip(itemPath, itemPath + '.zip', {compression: zip.COMPRESSION_LEVEL.high})
+        .then(() => {
+            res.download(itemPath + '.zip', function(err) {
+                if(err) next(err);
+            })});
     } else {
         res.download(itemPath, function(err) {
             if(err) next(err);
