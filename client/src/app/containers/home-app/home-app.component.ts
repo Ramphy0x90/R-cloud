@@ -14,6 +14,9 @@ export class HomeAppComponent implements OnInit {
   selectedItems: {name: string, path: string}[] = [];
 
   constructor(private itemService: ItemService) {
+    /**
+     * Subscribe to get items
+     */
     this.itemService.currentPath.subscribe((currentPath) => {
       this.path = [];
       
@@ -23,6 +26,7 @@ export class HomeAppComponent implements OnInit {
           name: key, isDir: folderParams.isDir, path: folderParams.path 
         });
 
+        // Sort by type, first folders then files
         this.path.sort((itemA, itemB) => {
           if (itemA.isDir !== itemB.isDir) {
             return Number(itemB.isDir) - Number(itemA.isDir);

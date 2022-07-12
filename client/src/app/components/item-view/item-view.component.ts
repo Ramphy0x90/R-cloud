@@ -14,6 +14,11 @@ export class ItemViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Function to get file extencion
+   * @param name 
+   * @returns 
+   */
   getExtencion(name: string) {
     let extencion = name.split('.');
 

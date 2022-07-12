@@ -10,5 +10,6 @@
     </div>
 </nav>
 
+<!-- Operations modal -->
 <app-upload-modal *ngIf="buttonsEvent.onUpload" (uploadModalAction)="setUploadModalEvent($event)"></app-upload-modal>
 <app-new-folder-modal *ngIf="buttonsEvent.onNew.status" (newFolderModalAction)="setNewFolderModalEvent($event)"></app-new-folder-modal>

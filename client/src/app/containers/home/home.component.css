@@ -13,8 +13,8 @@
     display: grid;
     margin: auto 0px;
     padding: 5rem 0;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    justify-content: space-between;
+    grid-template-columns: repeat(auto-fit, 350px);
+    justify-content: space-evenly;
     place-items: center;
 }
 
